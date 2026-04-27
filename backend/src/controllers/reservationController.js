@@ -1016,9 +1016,8 @@ export const proposeAdjustedPrice = async (req, res, next) => {
 
         // Notify car owner
         try {
-            const Notification = (await import('../models/Notification.js')).default;
-            await Notification.create({
-                user: reservation.user,
+            await createNotification({
+                recipient: reservation.user,
                 title: 'Price Adjustment Requested',
                 message: `Your garage service price has been updated to ${adjustedPrice} ETB. Reason: ${reservation.adjustedPriceReason}. Please review and respond.`,
                 type: 'payment',
@@ -1057,6 +1056,24 @@ export const respondToAdjustedPrice = async (req, res, next) => {
             reservation.totalPrice = reservation.adjustedPrice;
         }
         await reservation.save();
+
+        // Notify garage owner of the response
+        try {
+            const garage = await Garage.findById(reservation.garage).select('owner name');
+            if (garage) {
+                await createNotification({
+                    recipient: garage.owner,
+                    title: response === 'accepted' ? '✅ Price Adjustment Accepted' : '❌ Price Adjustment Rejected',
+                    message: response === 'accepted'
+                        ? `Customer accepted the price adjustment of ${reservation.adjustedPrice} ETB.`
+                        : `Customer rejected the price adjustment. Original price of ${reservation.totalPrice} ETB applies.`,
+                    type: 'payment',
+                    actionUrl: '/bookings',
+                    priority: 'high',
+                });
+            }
+        } catch { /* non-critical */ }
+
         return res.status(200).json({
             success: true,
             message: response === 'accepted' ? 'Price adjustment accepted. Please pay the updated amount.' : 'Price adjustment rejected.',
