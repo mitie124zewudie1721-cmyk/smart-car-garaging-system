@@ -480,6 +480,8 @@ export async function getAllPayments(req, res, next) {
             if (startDate) query.createdAt.$gte = new Date(startDate);
             if (endDate) query.createdAt.$lte = new Date(endDate);
         }
+        // Only show payments that have a reservation (garage + service)
+        query.reservation = { $exists: true, $ne: null };
 
         const payments = await Payment.find(query)
             .populate('user', 'name username phone email')
