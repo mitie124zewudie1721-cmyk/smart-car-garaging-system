@@ -230,43 +230,26 @@ export default function GarageDetailsModal({ garageId, isOpen, onClose, onReserv
                                 </div>
                             )}
 
-                            {/* Payment + Contact row */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {garage.paymentMethods && garage.paymentMethods.length > 0 && (
-                                    <div>
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <CreditCard size={15} className="text-indigo-500" />
-                                            <h3 className="font-semibold text-slate-800 text-sm">Payment</h3>
-                                        </div>
-                                        <div className="flex flex-wrap gap-1.5">
-                                            {garage.paymentMethods.map(m => (
-                                                <span key={m} className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full text-xs font-semibold">
-                                                    {PAYMENT_ICONS[m]} {PAYMENT_LABELS[m] || m}
-                                                </span>
-                                            ))}
-                                        </div>
+                            {/* Contact */}
+                            {garage.contact && (garage.contact.phone || garage.contact.email) && (
+                                <div>
+                                    <h3 className="font-semibold text-slate-800 text-sm mb-2">Contact</h3>
+                                    <div className="space-y-1.5">
+                                        {garage.contact.phone && (
+                                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                                                <Phone size={13} className="text-indigo-400" />
+                                                <span>{garage.contact.phone}</span>
+                                            </div>
+                                        )}
+                                        {garage.contact.email && (
+                                            <div className="flex items-center gap-2 text-sm text-slate-600">
+                                                <Mail size={13} className="text-indigo-400" />
+                                                <span className="truncate">{garage.contact.email}</span>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-                                {garage.contact && (garage.contact.phone || garage.contact.email) && (
-                                    <div>
-                                        <h3 className="font-semibold text-slate-800 text-sm mb-2">Contact</h3>
-                                        <div className="space-y-1.5">
-                                            {garage.contact.phone && (
-                                                <div className="flex items-center gap-2 text-sm text-slate-600">
-                                                    <Phone size={13} className="text-indigo-400" />
-                                                    <span>{garage.contact.phone}</span>
-                                                </div>
-                                            )}
-                                            {garage.contact.email && (
-                                                <div className="flex items-center gap-2 text-sm text-slate-600">
-                                                    <Mail size={13} className="text-indigo-400" />
-                                                    <span className="truncate">{garage.contact.email}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
 
                             {/* Location */}
                             <div className="flex items-start gap-3 bg-slate-50 rounded-xl p-4 border border-slate-100">
