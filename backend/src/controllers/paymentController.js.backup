@@ -1,0 +1,181 @@
+// src/controllers/paymentController.js
+import Payment from '../models/Payment.js';
+import Reservation from '../models/Reservation.js';
+import Garage from '../models/Garage.js';
+import logger from '../utils/logger.js';
+import { createNotification } from './notificationController.js';
+
+/**
+ * Initiate payment for a reservation (owner only)
+ */
+export const initiatePayment = async (req, res, next) => {
+    try {
+        const { reservationId, amount, paymentMethod } = req.body;
+
+        const reservation = await Reservation.findById(reservationId).populate('garage');
+        if (!reservation) {
+            return res.status(404).json({
+                success: false,
+                message: 'Reservation not found',
+            });
+        }
+
+        if (reservation.user.toString() !== req.user.id) {
+            return res.status(403).json({
+                success: false,
+                message: 'Not authorized to pay for this reservation',
+            });
+        }
+
+        // Generate unique transaction ID
+        const transactionId = `TXN-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+        const payment = await Payment.create({
+            reservation: reservationId,
+            user: req.user.id,
+            amount,
+            paymentMethod,
+            status: paymentMethod === 'cash' ? 'pending' : 'pending',
+            transactionId,
+        });
+
+        logger.info(`Payment initiated: ${payment._id} for reservation ${reservationId} via ${paymentMethod}`);
+
+        return res.status(201).json({
+            success: true,
+            message: 'Payment initiated successfully',
+            data: payment,
+        });
+    } catch (error) {
+        logger.error('Payment initiation failed', { error: error.message });
+        next(error);
+    }
+};
+
+/**
+ * Verify payment status (e.g. after gateway callback or manual check)
+ */
+export const verifyPayment = async (req, res, next) => {
+    try {
+        const { paymentId, status } = req.body;
+
+        const payment = await Payment.findById(paymentId).populate({
+            path: 'reservation',
+            populate: { path: 'garage' }
+        });
+
+        if (!payment) {
+            return res.status(404).json({
+                success: false,
+                message: 'Payment not found',
+            });
+        }
+
+        // Only owner or admin can verify
+        if (payment.user.toString() !== req.user.id && req.user.role !== 'admin') {
+            return res.status(403).json({
+                success: false,
+                message: 'Not authorized to verify this payment',
+            });
+        }
+
+        payment.status = status;
+        if (status === 'success') {
+            payment.paymentDate = new Date();
+        }
+        await payment.save();
+
+        // Update reservation payment status
+        if (status === 'success') {
+            await Reservation.findByIdAndUpdate(payment.reservation._id, {
+                paymentStatus: 'paid',
+            });
+
+            // Create notification for garage owner
+            try {
+                const garage = await Garage.findById(payment.reservation.garage._id || payment.reservation.garage);
+                if (garage) {
+                    await createNotification({
+                        recipient: garage.owner,
+                        title: 'Payment Received',
+                        message: `Payment of ${payment.amount} ETB received for ${payment.reservation.serviceType}`,
+                        type: 'payment_received',
+                        actionUrl: `/garage/bookings/${payment.reservation._id}`,
+                    });
+                    logger.info(`Payment notification sent to garage owner ${garage.owner}`);
+                }
+            } catch (notifError) {
+                logger.error('Failed to create payment notification', { error: notifError.message });
+            }
+        }
+
+        logger.info(`Payment verified: ${payment._id} - new status: ${status}`);
+
+        return res.status(200).json({
+            success: true,
+            message: 'Payment status updated',
+            data: payment,
+        });
+    } catch (error) {
+        logger.error('Payment verification failed', { error: error.message });
+        next(error);
+    }
+};
+
+/**
+ * Get status of a specific payment (owner or admin)
+ */
+export const getPaymentStatus = async (req, res, next) => {
+    try {
+        const payment = await Payment.findById(req.params.id);
+
+        if (!payment) {
+            return res.status(404).json({
+                success: false,
+                message: 'Payment not found',
+            });
+        }
+
+        if (payment.user.toString() !== req.user.id && req.user.role !== 'admin') {
+            return res.status(403).json({
+                success: false,
+                message: 'Not authorized to view this payment',
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: payment,
+        });
+    } catch (error) {
+        logger.error('Get payment status failed', { error: error.message });
+        next(error);
+    }
+};
+
+/**
+ * Get all payments made by the current user
+ */
+export const getMyPayments = async (req, res, next) => {
+    try {
+        const payments = await Payment.find({ user: req.user.id })
+            .populate('reservation')
+            .sort({ createdAt: -1 });
+
+        return res.status(200).json({
+            success: true,
+            count: payments.length,
+            data: payments,
+        });
+    } catch (error) {
+        logger.error('Get my payments failed', { error: error.message });
+        next(error);
+    }
+};
+
+export default {
+    initiatePayment,
+    verifyPayment,
+    getPaymentStatus,
+    getMyPayments,
+};

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Vehicle API</title>
+</head>
+
+<body>
+    <h1>Test Vehicle Fetching</h1>
+    <button onclick="testLogin()">1. Login as carowner</button>
+    <button onclick="testFetchVehicles()">2. Fetch Vehicles</button>
+    <button onclick="testBoth()">3. Test Both</button>
+    <pre id="output"></pre>
+
+    <script>
+        let token = null;
+
+        function log(message) {
+            const output = document.getElementById('output');
+            output.textContent += message + '\n';
+            console.log(message);
+        }
+
+        async function testLogin() {
+            document.getElementById('output').textContent = '';
+            log('Testing login...');
+
+            try {
+                const response = await fetch('http://localhost:5002/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: 'carowner',
+                        password: 'carowner123'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    token = data.token;
+                    log('✅ Login successful!');
+                    log('Token: ' + token.substring(0, 50) + '...');
+                    log('User: ' + data.user.username + ' (' + data.user.role + ')');
+                } else {
+                    log('❌ Login failed: ' + data.message);
+                }
+            } catch (error) {
+                log('❌ Error: ' + error.message);
+            }
+        }
+
+        async function testFetchVehicles() {
+            if (!token) {
+                log('❌ Please login first!');
+                return;
+            }
+
+            log('\nFetching vehicles...');
+
+            try {
+                const response = await fetch('http://localhost:5002/api/vehicles/my', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    log('✅ Vehicles fetched successfully!');
+                    log('Count: ' + data.count);
+                    log('Vehicles:');
+                    data.data.forEach((v, i) => {
+                        log(`  ${i + 1}. ${v.make} ${v.model} (${v.plateNumber}) - ${v.type}, ${v.sizeCategory}`);
+                    });
+                } else {
+                    log('❌ Failed to fetch vehicles: ' + data.message);
+                }
+            } catch (error) {
+                log('❌ Error: ' + error.message);
+            }
+        }
+
+        async function testBoth() {
+            document.getElementById('output').textContent = '';
+            await testLogin();
+            await new Promise(resolve => setTimeout(resolve, 500));
+            await testFetchVehicles();
+        }
+    </script>
+</body>
+
+</html>
