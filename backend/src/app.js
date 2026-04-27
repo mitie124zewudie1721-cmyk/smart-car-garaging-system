@@ -54,14 +54,25 @@ app.use(helmet({
 }));
 
 // ── 4. CORS ──
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
+    'http://10.140.183.11:5173',
+    'http://10.140.186.147:5173',
+    'http://10.140.162.65:5173',
+    process.env.CLIENT_URL,
+    process.env.CLIENT_URL_MOBILE,
+].filter(Boolean);
+
 app.use(cors({
-    origin: [
-        'http://localhost:5173',
-        'http://127.0.0.1:5173',
-        'http://10.140.183.11:5173',
-        'http://10.140.186.147:5173',
-        'http://10.140.162.65:5173',
-    ],
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, curl, etc.)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        // Allow any vercel.app subdomain
+        if (origin.endsWith('.vercel.app')) return callback(null, true);
+        return callback(new Error(`CORS blocked: ${origin}`));
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
