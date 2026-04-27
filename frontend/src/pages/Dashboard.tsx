@@ -133,105 +133,70 @@ export default function Dashboard() {
 
                 {/* Quick Stats Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Common card */}
-                    <Card className="p-6 hover:shadow-xl transition-all duration-300">
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                Total Reservations
-                            </h3>
-                            <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-full">
-                                <Car size={24} className="text-indigo-600 dark:text-indigo-400" />
-                            </div>
-                        </div>
-                        <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{stats.totalReservations}</p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">+14% from last month</p>
-                    </Card>
 
-                    {/* Role-specific cards */}
+                    {/* Total Reservations — all roles */}
+                    <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+                        style={{ background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)' }}>
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
+                        <div className="p-2.5 bg-white/20 rounded-xl w-fit mb-4"><Car size={22} /></div>
+                        <p className="text-sm font-medium opacity-80 mb-1">Total Reservations</p>
+                        <p className="text-4xl font-black">{stats.totalReservations}</p>
+                    </div>
+
                     {role === 'car_owner' && (
                         <>
-                            <Card className="p-6 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        Active Bookings
-                                    </h3>
-                                    <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-full">
-                                        <ParkingSquare size={24} className="text-green-600 dark:text-green-400" />
-                                    </div>
-                                </div>
-                                <p className="text-3xl font-bold text-green-600 dark:text-green-400">{stats.activeBookings}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Next: Today 14:00</p>
-                            </Card>
-                            <Card className="p-6 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        Favorite Garages
-                                    </h3>
-                                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                                        <Search size={24} className="text-blue-600 dark:text-blue-400" />
-                                    </div>
-                                </div>
-                                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{stats.favoriteGarages}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Most used: Central Park</p>
-                            </Card>
+                            <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+                                style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}>
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
+                                <div className="p-2.5 bg-white/20 rounded-xl w-fit mb-4"><ParkingSquare size={22} /></div>
+                                <p className="text-sm font-medium opacity-80 mb-1">Active Bookings</p>
+                                <p className="text-4xl font-black">{stats.activeBookings}</p>
+                            </div>
+                            <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+                                style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
+                                <div className="p-2.5 bg-white/20 rounded-xl w-fit mb-4"><BarChart2 size={22} /></div>
+                                <p className="text-sm font-medium opacity-80 mb-1">Completed</p>
+                                <p className="text-4xl font-black">{stats.completedBookings}</p>
+                            </div>
                         </>
                     )}
 
                     {role === 'garage_owner' && (
                         <>
-                            <Card className="p-6 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        Active Garages
-                                    </h3>
-                                    <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                                        <ParkingSquare size={24} className="text-purple-600 dark:text-purple-400" />
-                                    </div>
-                                </div>
-                                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{stats.activeGarages}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Total slots: 142</p>
-                            </Card>
-                            <Card className="p-6 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        Today's Occupancy
-                                    </h3>
-                                    <div className="p-3 bg-amber-100 dark:bg-amber-900/30 rounded-full">
-                                        <BarChart2 size={24} className="text-amber-600 dark:text-amber-400" />
-                                    </div>
-                                </div>
-                                <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">{stats.todaysOccupancy}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Peak hour: 17:00–19:00</p>
-                            </Card>
+                            <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+                                style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' }}>
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
+                                <div className="p-2.5 bg-white/20 rounded-xl w-fit mb-4"><ParkingSquare size={22} /></div>
+                                <p className="text-sm font-medium opacity-80 mb-1">Active Garages</p>
+                                <p className="text-4xl font-black">{stats.activeGarages}</p>
+                            </div>
+                            <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+                                style={{ background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' }}>
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
+                                <div className="p-2.5 bg-white/20 rounded-xl w-fit mb-4"><BarChart2 size={22} /></div>
+                                <p className="text-sm font-medium opacity-80 mb-1">Today's Occupancy</p>
+                                <p className="text-4xl font-black">{stats.todaysOccupancy}</p>
+                            </div>
                         </>
                     )}
 
                     {role === 'admin' && (
                         <>
-                            <Card className="p-6 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        Total Users
-                                    </h3>
-                                    <div className="p-3 bg-cyan-100 dark:bg-cyan-900/30 rounded-full">
-                                        <User size={24} className="text-cyan-600 dark:text-cyan-400" />
-                                    </div>
-                                </div>
-                                <p className="text-3xl font-bold text-cyan-600 dark:text-cyan-400">{stats.totalUsers}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Registered users</p>
-                            </Card>
-                            <Card className="p-6 hover:shadow-xl transition-all duration-300">
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                        Total Garages
-                                    </h3>
-                                    <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 rounded-full">
-                                        <ParkingSquare size={24} className="text-emerald-600 dark:text-emerald-400" />
-                                    </div>
-                                </div>
-                                <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{stats.systemHealth}</p>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Registered garages</p>
-                            </Card>
+                            <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+                                style={{ background: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)' }}>
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
+                                <div className="p-2.5 bg-white/20 rounded-xl w-fit mb-4"><User size={22} /></div>
+                                <p className="text-sm font-medium opacity-80 mb-1">Total Users</p>
+                                <p className="text-4xl font-black">{stats.totalUsers}</p>
+                            </div>
+                            <div className="relative overflow-hidden rounded-2xl p-6 text-white shadow-lg hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+                                style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}>
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -translate-y-8 translate-x-8" />
+                                <div className="p-2.5 bg-white/20 rounded-xl w-fit mb-4"><ParkingSquare size={22} /></div>
+                                <p className="text-sm font-medium opacity-80 mb-1">Total Garages</p>
+                                <p className="text-4xl font-black">{stats.systemHealth}</p>
+                            </div>
                         </>
                     )}
                 </div>
