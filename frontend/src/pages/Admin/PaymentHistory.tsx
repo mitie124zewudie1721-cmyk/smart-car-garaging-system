@@ -30,30 +30,33 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 const METHOD_LABEL: Record<string, string> = {
-    cash: '💵 Cash',
     telebirr: '📱 Telebirr',
     cbe_birr: '🏦 CBE Birr',
     bank_transfer_cbe: '🏦 CBE Bank',
     bank_transfer_abyssinia: '🏛️ Abyssinia',
+    cash: '💵 Cash',
 };
 
 const CHAPA_METHOD: Record<string, string> = {
     mpesa: '📱 M-PESA',
     telebirr: '📱 Telebirr',
-    cbe: '🏦 CBE',
+    cbe: '🏦 CBE Birr',
+    cbebirr: '🏦 CBE Birr',
     card: '💳 Card',
-    test: '🧪 Test',
+    test: '📱 Telebirr', // test mode defaults to Telebirr
 };
 
 function getMethodDisplay(p: Payment): string {
+    // Use actual method from Chapa verification if available
     if (p.metadata?.actualMethod) {
         const key = p.metadata.actualMethod.toLowerCase().replace(/[^a-z]/g, '');
-        return `${CHAPA_METHOD[key] || p.metadata.actualMethod} (Chapa)`;
+        return CHAPA_METHOD[key] || p.metadata.actualMethod;
     }
+    // Chapa payment — show the payment method used
     if (p.paymentProvider === 'chapa' || p.transactionId?.startsWith('SGS-')) {
-        return `${METHOD_LABEL[p.paymentMethod] || p.paymentMethod} (Chapa)`;
+        return METHOD_LABEL[p.paymentMethod] || '📱 Telebirr';
     }
-    return METHOD_LABEL[p.paymentMethod] || p.paymentMethod;
+    return METHOD_LABEL[p.paymentMethod] || p.paymentMethod?.replace(/_/g, ' ') || '—';
 }
 
 export default function AdminPaymentHistory() {
@@ -119,7 +122,7 @@ export default function AdminPaymentHistory() {
                     ))}
                 </div>
                 <div className="flex gap-2">
-                    {['all', 'cash', 'telebirr', 'cbe_birr', 'bank_transfer_cbe', 'bank_transfer_abyssinia'].map(m => (
+                    {['all', 'telebirr', 'cbe_birr', 'bank_transfer_cbe', 'bank_transfer_abyssinia'].map(m => (
                         <button key={m} onClick={() => { setMethodFilter(m); setPage(1); }}
                             className={`px-3 py-1.5 rounded-xl text-sm font-semibold transition-all ${methodFilter === m ? 'bg-violet-600 text-white' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
                             {m === 'all' ? 'All Methods' : METHOD_LABEL[m] || m}
@@ -158,13 +161,13 @@ export default function AdminPaymentHistory() {
                                             <p className="text-xs text-slate-400">{p.user?.phone || p.user?.username}</p>
                                         </td>
                                         <td className="px-4 py-3 text-sm text-slate-700">
-                                            {p.reservation?.garage?.name || (p.metadata?.type === 'registration_fee' ? 'Platform' : '—')}
+                                            {p.reservation?.garage?.name || (p.metadata?.type === 'registration_fee' ? 'Platform' : 'N/A')}
                                         </td>
                                         <td className="px-4 py-3">
                                             <p className="text-sm text-slate-700">
                                                 {p.metadata?.type === 'registration_fee'
-                                                    ? '🏢 Registration Fee'
-                                                    : (p.reservation?.serviceType || '—')}
+                                                    ? 'Registration Fee'
+                                                    : (p.reservation?.serviceType || 'N/A')}
                                             </p>
                                             {p.metadata?.isDeposit && <span className="text-xs bg-orange-100 text-orange-700 px-1.5 py-0.5 rounded">Deposit</span>}
                                         </td>
