@@ -490,6 +490,11 @@ export async function getAllPayments(req, res, next) {
             .skip((page - 1) * limit)
             .limit(Number(limit));
 
+        // Filter out payments where reservation has no garage or no serviceType (orphaned)
+        const filtered = payments.filter(p =>
+            p.reservation && p.reservation.garage && p.reservation.serviceType
+        );
+
         const total = await Payment.countDocuments(query);
         const totalRevenue = await Payment.aggregate([
             { $match: { ...query, status: 'success' } },
@@ -498,8 +503,8 @@ export async function getAllPayments(req, res, next) {
 
         return res.status(200).json({
             success: true,
-            data: payments,
-            pagination: { page: Number(page), limit: Number(limit), total, pages: Math.ceil(total / limit) },
+            data: filtered,
+            pagination: { page: Number(page), limit: Number(limit), total: filtered.length, pages: Math.ceil(filtered.length / limit) },
             summary: totalRevenue[0] || { total: 0, commission: 0 },
         });
     } catch (error) {
