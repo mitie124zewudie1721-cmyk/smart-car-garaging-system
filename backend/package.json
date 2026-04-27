@@ -11,8 +11,7 @@
     "lint": "eslint . --ext .js --quiet",
     "lint:fix": "eslint . --ext .js --fix",
     "test": "jest --coverage --verbose",
-    "test:watch": "jest --watch",
-    "prepare": "husky install"
+    "test:watch": "jest --watch"
   },
   "keywords": [
     "garage-booking",
