@@ -14,7 +14,7 @@ export default function Footer() {
                             Smart Garaging
                         </Link>
                         <p className="mt-3 text-sm text-slate-400 max-w-xs mx-auto md:mx-0">
-                            Smart parking solution for car owners and garage operators in Ethiopia.
+                            Smart garaging solution for car owners and garage operators in jimma.
                         </p>
                     </div>
 
@@ -70,12 +70,7 @@ export default function Footer() {
                         <h4 className="text-lg font-semibold text-white mb-4">Legal & Contact</h4>
                         <ul className="space-y-2 text-sm">
                             <li>
-                                <a
-                                    href="#"
-                                    className="hover:text-indigo-400 transition-colors"
-                                >
-                                    Privacy Policy
-                                </a>
+
                             </li>
                             <li>
                                 <a
@@ -86,12 +81,7 @@ export default function Footer() {
                                 </a>
                             </li>
                             <li>
-                                <a
-                                    href="mailto:support@smartgaraging.com"
-                                    className="hover:text-indigo-400 transition-colors"
-                                >
-                                    support@smartgaraging.com
-                                </a>
+
                             </li>
                             <li className="text-slate-500">
                                 © {currentYear} Smart Garaging. All rights reserved.
@@ -102,7 +92,7 @@ export default function Footer() {
 
                 {/* Bottom bar */}
                 <div className="mt-10 pt-8 border-t border-slate-800 text-center text-sm text-slate-500">
-                    <p>Made with care for smarter parking in Ethiopia</p>
+                    <p>Made with care for smarter garaging in jimma</p>
                 </div>
             </div>
         </footer>

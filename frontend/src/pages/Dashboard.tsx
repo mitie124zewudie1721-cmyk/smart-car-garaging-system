@@ -35,10 +35,33 @@ export default function Dashboard() {
             fetchDashboardStats();
         } else if (user && role === 'admin') {
             fetchAdminStats();
+        } else if (user && role === 'garage_owner') {
+            fetchGarageOwnerStats();
         } else {
             setLoadingStats(false);
         }
     }, [user, role]);
+
+    const fetchGarageOwnerStats = async () => {
+        try {
+            const [reservationsRes, garagesRes] = await Promise.all([
+                api.get('/reservations/garage-bookings'),
+                api.get('/garages'),
+            ]);
+            const reservations = reservationsRes.data.data || [];
+            const garages = garagesRes.data.data || [];
+            const myGarages = garages.filter((g: any) => g.owner === user?._id || g.owner?._id === user?._id);
+            const activeGarages = myGarages.filter((g: any) => g.isActive).length;
+            setStats(prev => ({
+                ...prev,
+                totalReservations: reservations.length,
+                activeGarages: activeGarages || myGarages.length,
+                todaysOccupancy: reservations.filter((r: any) => r.status === 'active' || r.status === 'confirmed').length,
+            }));
+        } catch { /* keep zeros */ } finally {
+            setLoadingStats(false);
+        }
+    };
 
     const fetchAdminStats = async () => {
         try {

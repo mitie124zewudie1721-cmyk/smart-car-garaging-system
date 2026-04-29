@@ -134,29 +134,24 @@ export default function CommissionManagement() {
             <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
                 <div className="mb-6">
                     <h1 className="text-3xl font-bold text-slate-800">Commission &amp; Payouts</h1>
-                    <p className="text-slate-500 mt-1">Commission is collected <strong>automatically</strong> for digital payments. Cash payments require manual tracking.</p>
+
                 </div>
                 <div className="flex gap-2 mb-6 bg-white border border-indigo-100 rounded-xl p-1 w-fit shadow-sm flex-wrap">
                     {(['rates', 'payments', 'payouts'] as const).map(t => (
                         <button key={t} onClick={() => setTab(t)}
                             className={"px-5 py-2 rounded-lg text-sm font-semibold transition-all duration-200 " + (tab === t ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-500 hover:text-indigo-600')}>
-                            {t === 'rates' ? 'Commission Rates' : t === 'payments' ? 'Commission Collected' : 'Cash Commission'}
+                            {t === 'rates' ? 'Commission Rates' : t === 'payments' ? 'Commission Collected' : ''}
                         </button>
                     ))}
                 </div>
 
                 {tab === 'rates' && (
                     <>
-                        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 mb-6 flex items-center gap-3">
-                            <span className="text-2xl">⚡</span>
-                            <div className="text-sm text-indigo-800">
-                                <strong>Automatic digital payment flow:</strong> Car owner pays digitally → system deducts 10% commission instantly → 90% credited to garage owner wallet. Cash payments require manual commission collection.
-                            </div>
-                        </div>
+
                         <div className="bg-white rounded-2xl shadow-sm border border-indigo-100 p-6 mb-6">
                             <div className="flex items-center gap-3 mb-5">
                                 <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center"><Settings className="w-5 h-5 text-indigo-600" /></div>
-                                <div><h2 className="text-lg font-bold text-slate-800">Default Platform Commission</h2><p className="text-sm text-slate-500">Applied to all garages unless overridden</p></div>
+                                <div><h2 className="text-lg font-bold text-slate-800"> Platform Commission</h2><p className="text-sm text-slate-500"></p></div>
                             </div>
                             <div className="flex items-center gap-4 flex-wrap">
                                 <div className="flex-1 max-w-xs">
@@ -321,11 +316,8 @@ export default function CommissionManagement() {
                 {tab === 'payments' && (
                     <>
                         <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-5 flex items-center gap-3">
-                            <span className="text-2xl">⚡</span>
-                            <div>
-                                <p className="text-sm font-bold text-emerald-800">Digital payment commission is collected automatically</p>
-                                <p className="text-sm text-emerald-700">10% is deducted from every Telebirr/CBE/Abyssinia payment the moment it is verified. Nothing to chase manually.</p>
-                            </div>
+                            <span className="text-2xl"></span>
+
                         </div>
                         <div className="flex items-center justify-between mb-5 bg-white border border-indigo-100 rounded-2xl px-5 py-4 shadow-sm">
                             <button onClick={prevSel} className="p-2 rounded-lg hover:bg-indigo-50 text-slate-500 hover:text-indigo-600 transition"><ChevronLeft className="w-5 h-5" /></button>

@@ -125,7 +125,7 @@ export default function Sidebar() {
                 {/* Brand */}
                 <div className="mb-8 px-1">
                     <h2 className="text-xl font-bold text-white tracking-tight">Smart Garaging</h2>
-                    <p className="text-xs text-slate-400 mt-0.5">Parking made simple</p>
+                    <p className="text-xs text-slate-400 mt-0.5"></p>
                 </div>
 
                 {/* Nav Links */}
@@ -203,7 +203,7 @@ export default function Sidebar() {
                         )}
 
                         <NavLink to="/garage-disputes" className={({ isActive }) => linkCls(isActive, accent)}>
-                            <AlertCircle size={18} />{t('nav.disputes')}
+                            <AlertCircle size={18} />Disputes & Complaints
                         </NavLink>
                     </>)}
 

@@ -13,7 +13,7 @@ const vehicleSchema = new mongoose.Schema({
         uppercase: true,
         unique: true,
     },
-    make: String,
+    makee: String,
     model: String,
     year: {
         type: Number,

@@ -94,18 +94,6 @@ export default function Refunds() {
                 </button>
             </div>
 
-            {/* Instructions */}
-            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 text-sm text-blue-800">
-                <p className="font-bold mb-1">📋 How to process a refund:</p>
-                <ol className="list-decimal list-inside space-y-1 text-blue-700">
-                    <li>Go to <strong>dashboard.chapa.co</strong> → Transactions</li>
-                    <li>Find the transaction using the <strong>Chapa Reference</strong> shown on the card below</li>
-                    <li>Click the transaction → click <strong>Refund</strong></li>
-                    <li>Come back here → click <strong>Mark as Refunded</strong> (reference is pre-filled)</li>
-                    <li>Car owner gets notified automatically</li>
-                </ol>
-            </div>
-
             {/* Filter tabs */}
             <div className="flex gap-2 mb-5">
                 {(['refund_pending', 'refunded', 'all'] as const).map(f => (

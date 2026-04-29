@@ -331,7 +331,7 @@ export default function Home() {
                         <h2 className="text-5xl font-black text-white mb-5 tracking-tight">
                             Why Choose <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">Smart Garaging?</span>
                         </h2>
-                        <p className="text-slate-400 text-xl max-w-xl mx-auto">Everything you need for effortless parking, in one intelligent platform.</p>
+                        <p className="text-slate-400 text-xl max-w-xl mx-auto"></p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
