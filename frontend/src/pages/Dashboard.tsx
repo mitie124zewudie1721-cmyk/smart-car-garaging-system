@@ -46,16 +46,15 @@ export default function Dashboard() {
         try {
             const [reservationsRes, garagesRes] = await Promise.all([
                 api.get('/reservations/garage-bookings'),
-                api.get('/garages'),
+                api.get('/garages/my'),
             ]);
             const reservations = reservationsRes.data.data || [];
             const garages = garagesRes.data.data || [];
-            const myGarages = garages.filter((g: any) => g.owner === user?._id || g.owner?._id === user?._id);
-            const activeGarages = myGarages.filter((g: any) => g.isActive).length;
+            const activeGarages = garages.filter((g: any) => g.isActive).length;
             setStats(prev => ({
                 ...prev,
                 totalReservations: reservations.length,
-                activeGarages: activeGarages || myGarages.length,
+                activeGarages: activeGarages || garages.length,
                 todaysOccupancy: reservations.filter((r: any) => r.status === 'active' || r.status === 'confirmed').length,
             }));
         } catch { /* keep zeros */ } finally {
@@ -103,6 +102,7 @@ export default function Dashboard() {
                 todaysOccupancy: 0,
                 totalUsers: 0,
                 systemHealth: 0,
+                totalSlots: 0,
             });
         } catch (error) {
             console.error('Failed to fetch dashboard stats:', error);
