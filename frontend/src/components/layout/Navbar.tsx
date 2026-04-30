@@ -184,6 +184,12 @@ export default function Navbar() {
             {isMobileMenuOpen && (
                 <div className="md:hidden bg-slate-900/95 backdrop-blur-xl border-t border-slate-800/50 mobile-menu">
                     <div className="px-4 py-8 space-y-6">
+                        {/* Language selector in mobile menu */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-slate-400 text-sm">Language:</span>
+                            <LanguageSelector />
+                        </div>
+
                         <Link
                             to="/"
                             className="block text-white text-lg font-medium hover:text-indigo-400 transition-colors"
