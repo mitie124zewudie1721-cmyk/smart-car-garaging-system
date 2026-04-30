@@ -6,15 +6,11 @@ import en from './locales/en.json';
 import am from './locales/am.json';
 import om from './locales/om.json';
 
-// Always default to English — only use saved preference if it's a valid non-default choice
-const savedLang = localStorage.getItem('i18nextLng');
-const validLangs = ['en', 'am', 'om'];
-// If saved lang is missing or was 'am' set by old default, reset to 'en'
-const lng = (savedLang && validLangs.includes(savedLang) && savedLang !== 'am')
-    ? savedLang
-    : 'en';
-
-// Ensure localStorage reflects the actual language being used
+// Always start with English — clear any old Amharic default
+const saved = localStorage.getItem('i18nextLng');
+// Only keep saved preference if user explicitly chose 'om' (Oromo)
+// Reset 'am' (old default) and anything else back to 'en'
+const lng = saved === 'om' ? 'om' : 'en';
 localStorage.setItem('i18nextLng', lng);
 
 i18n
