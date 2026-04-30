@@ -112,7 +112,6 @@ export default function GarageOwnerDisputes() {
         handleSubmit: handleSubmitFeedback,
         formState: { errors: feedbackErrors },
         reset: resetFeedback,
-        setValue: setFeedbackValue,
     } = useForm<FeedbackFormData>({
         resolver: zodResolver(feedbackSchema),
     });
@@ -226,11 +225,6 @@ export default function GarageOwnerDisputes() {
         } finally {
             setSubmitting(false);
         }
-    };
-
-    const handleRatingClick = (rating: number) => {
-        setFeedbackRating(rating);
-        setFeedbackValue('rating', rating, { shouldValidate: true });
     };
 
     const filteredDisputes = filter === 'all'

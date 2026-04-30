@@ -4,13 +4,11 @@ import { useAuthStore } from '@/store/authStore';
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import Button from '@/components/common/Button';
-import Card from '@/components/common/Card';
 import Loader from '@/components/common/Loader';
-import { User, Car, ParkingSquare, BarChart2, Search, ShieldAlert } from 'lucide-react';
-import { toast } from 'react-hot-toast';
+import { User, Car, ParkingSquare, BarChart2, Search } from 'lucide-react';
 
 export default function Dashboard() {
-    const { user, isLoading, logout } = useAuthStore();
+    const { user, isLoading } = useAuthStore();
     const navigate = useNavigate();
     const [stats, setStats] = useState({
         totalReservations: 0,

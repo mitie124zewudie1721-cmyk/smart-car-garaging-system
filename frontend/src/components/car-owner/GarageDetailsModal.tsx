@@ -1,5 +1,5 @@
 // src/components/car-owner/GarageDetailsModal.tsx
-import { X, MapPin, Phone, Mail, Clock, Star, Car, Wrench, CreditCard, Shield } from 'lucide-react';
+import { X, MapPin, Phone, Mail, Clock, Star, Car, Wrench, Shield } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
 import Loader from '@/components/common/Loader';
@@ -20,14 +20,6 @@ interface GarageDetails {
 const AMENITY_ICONS: Record<string, string> = {
     covered: '🏠', secure: '🔒', '24h': '🕐', washing: '🚿', repair: '🔧',
     electric_charge: '⚡', air_pump: '💨', cctv: '📹', valet: '🎩',
-};
-
-const PAYMENT_ICONS: Record<string, string> = {
-    cash: '💵', telebirr: '📱', cbe_birr: '🏦', abyssinia_bank: '🏛️', chapa: '💳', m_pesa: '📲',
-};
-const PAYMENT_LABELS: Record<string, string> = {
-    cash: 'Cash', telebirr: 'Telebirr', cbe_birr: 'CBE Birr',
-    abyssinia_bank: 'Abyssinia', chapa: 'Chapa', m_pesa: 'M-Pesa',
 };
 
 const DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
