@@ -6,16 +6,16 @@ import en from './locales/en.json';
 import am from './locales/am.json';
 import om from './locales/om.json';
 
-// Version bump forces language reset when new translations are deployed
-const I18N_VERSION = '3';
-const storedVersion = localStorage.getItem('i18nVersion');
-if (storedVersion !== I18N_VERSION) {
-    // Reset to English on version change
-    localStorage.removeItem('i18nextLng');
-    localStorage.setItem('i18nVersion', I18N_VERSION);
-}
+// Always default to English — only use saved preference if it's a valid non-default choice
+const savedLang = localStorage.getItem('i18nextLng');
+const validLangs = ['en', 'am', 'om'];
+// If saved lang is missing or was 'am' set by old default, reset to 'en'
+const lng = (savedLang && validLangs.includes(savedLang) && savedLang !== 'am')
+    ? savedLang
+    : 'en';
 
-const savedLang = localStorage.getItem('i18nextLng') || 'en';
+// Ensure localStorage reflects the actual language being used
+localStorage.setItem('i18nextLng', lng);
 
 i18n
     .use(initReactI18next)
@@ -25,13 +25,13 @@ i18n
             am: { translation: am },
             om: { translation: om },
         },
-        lng: savedLang,
+        lng,
         fallbackLng: 'en',
         interpolation: { escapeValue: false },
     });
 
-i18n.on('languageChanged', (lng) => {
-    localStorage.setItem('i18nextLng', lng);
+i18n.on('languageChanged', (lang) => {
+    localStorage.setItem('i18nextLng', lang);
 });
 
 export default i18n;
