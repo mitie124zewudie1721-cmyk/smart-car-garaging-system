@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import api from '@/lib/api';
 import { toast } from 'react-hot-toast';
-import Card from '@/components/common/Card';
 import Button from '@/components/common/Button';
 import Loader from '@/components/common/Loader';
 import Alert from '@/components/common/Alert';
