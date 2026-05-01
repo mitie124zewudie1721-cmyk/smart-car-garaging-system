@@ -298,24 +298,6 @@ export default function Users() {
             {activeTab === 'users' && (
                 <div>
 
-                    {/* Info Card */}
-                    <Card className="mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-2 border-blue-200 dark:border-blue-800">
-                        <div className="flex items-start gap-4">
-                            <div className="text-3xl">ℹ️</div>
-                            <div>
-                                <h3 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">
-                                    {t('users.roleManagement')}
-                                </h3>
-                                <div className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                                    <p>✅ <strong>{t('users.changeRoles')}:</strong> {t('users.roleChangeDesc')}</p>
-                                    <p>✅ <strong>{t('users.addAdmins')}:</strong> {t('users.addAdminsDesc')}</p>
-                                    <p>✅ <strong>{t('users.suspendActivate')}:</strong> {t('users.suspendDesc')}</p>
-                                    <p>⚠️ <strong>{t('users.note')}:</strong> {t('users.roleNote')}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </Card>
-
                     {/* Filter Tabs */}
                     <div className="flex gap-2 mb-6 flex-wrap">
                         {['all', 'car_owner', 'garage_owner', 'admin'].map((role) => (
