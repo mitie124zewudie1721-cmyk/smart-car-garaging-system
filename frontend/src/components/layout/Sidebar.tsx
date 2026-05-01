@@ -87,7 +87,7 @@ export default function Sidebar() {
 
     if (isLoading) {
         return (
-            <aside className="hidden lg:block w-64 h-screen sticky top-0"
+            <aside className="w-64 h-full"
                 style={{ background: 'linear-gradient(180deg, #312e81 0%, #3730a3 50%, #312e81 100%)' }}>
                 <div className="flex flex-col h-full p-6">
                     <div className="h-10 bg-white/10 rounded animate-pulse mb-10" />
@@ -116,7 +116,7 @@ export default function Sidebar() {
 
     return (
         <aside
-            className="hidden lg:block w-64 h-screen sticky top-0 overflow-y-auto shadow-2xl"
+            className="w-full h-full overflow-y-auto shadow-2xl"
             style={{ background: 'linear-gradient(180deg, #312e81 0%, #3730a3 50%, #312e81 100%)' }}
             role="navigation"
             aria-label="Main sidebar navigation"

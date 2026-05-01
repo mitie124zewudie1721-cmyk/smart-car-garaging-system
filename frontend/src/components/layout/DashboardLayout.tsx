@@ -53,7 +53,7 @@ export default function DashboardLayout() {
                     {/* Below navbar: sidebar + content */}
                     <div className="flex flex-1 overflow-hidden">
                         {/* Desktop Sidebar */}
-                        <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
+                        <div className="hidden lg:block lg:w-64 lg:flex-shrink-0 lg:h-screen lg:sticky lg:top-0 w-64">
                             <Sidebar />
                         </div>
 
